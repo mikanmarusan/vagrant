@@ -1,0 +1,8 @@
+WSGIScriptAlias /hello /src/hello.py
+
+<Directory /src>
+  SetHandler wsgi-script
+
+  Order deny,allow
+  Allow from all
+</Directory>
