@@ -31,11 +31,25 @@ def _setup_packages():
 	cuisine.package_ensure('apache2-mpm-worker')
 
 def _configuration_apache2():
-	sudo('cp /vagrant/hello /etc/apache2/sites-available/hello')
 	if not cuisine.file_exists('/etc/apache2/sites-enabled/hello'):
+		cuisine.file_write(
+				location = '/etc/apache2/sites-available/hello',
+				content  = "WSGIScriptAlias /hello /src/hello.py"
+                   "\n"
+                   "<Directory /src>\n"
+                   "  SetHandler wsgi-script\n"
+                   "\n"
+                   "  Order deny,allow\n"
+                   "  Allow from all\n"
+                   "</Directory>\n",
+				mode=None,
+				owner=None,
+				group=None,
+				sudo=True
+
+		)
 		sudo('a2ensite hello')
 
 def _restart_daemons():
 	puts(green('Restarting Daemons'))
 	cuisine.upstart_ensure('apache2')
-	#sudo('/etc/init.d/apache2 restart')
