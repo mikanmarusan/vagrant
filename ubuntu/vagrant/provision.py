@@ -13,12 +13,16 @@ def kernel_name():
 	run('uname -a')
 
 def setup():
+	_setup_ubuntu()
 	_setup_devtools()
 	_setup_packages()
-
 	_configuration_apache2()
-
 	_restart_daemons()
+
+def _setup_ubuntu():
+	puts(green('Setting Operation System'))
+	sudo("cp /usr/share/zoneinfo/Japan /etc/localtime")
+	sudo("apt-get update")
 
 def _setup_devtools():
 	puts(green('Installing Devtools'))
@@ -49,6 +53,7 @@ def _configuration_apache2():
 
 		)
 		sudo('a2ensite hello')
+		sudo('/etc/init.d/apache2 reload')
 
 def _restart_daemons():
 	puts(green('Restarting Daemons'))
