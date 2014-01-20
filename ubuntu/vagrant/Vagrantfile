@@ -1,0 +1,56 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+	config.vm.define :precise do |precise|
+		# vagrant box 
+		precise.vm.box = "ubuntu-12.04"
+		# private network
+		precise.vm.network :private_network, ip: "192.168.33.10"
+
+		# synced folder
+		precise.vm.synced_folder "../src", "/src", create: true, owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=777,fmode=666']
+
+		# provisioning using Fabric
+		precise.vm.provision :fabric do |fabric|
+			fabric.fabfile_path = "./fabfile.py"
+			fabric.tasks = ["kernel_name", "setup"]
+		end
+	end
+
+	config.vm.define :raring do |raring|
+		# vagrant box 
+		raring.vm.box = "ubuntu-13.04"
+		# private network
+		raring.vm.network :private_network, ip: "192.168.33.11"
+
+		# synced folder
+		raring.vm.synced_folder "../src", "/src", create: true, owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=777,fmode=666']
+
+		# provisioning using Fabric
+		raring.vm.provision :fabric do |fabric|
+			fabric.fabfile_path = "./fabfile.py"
+			fabric.tasks = ["kernel_name", "setup"]
+		end
+	end
+
+	config.vm.define :saucy do |saucy|
+		# vagrant box 
+		saucy.vm.box = "ubuntu-13.10"
+		# private network
+		saucy.vm.network :private_network, ip: "192.168.33.12"
+
+		# synced folder
+		saucy.vm.synced_folder "../src", "/src", create: true, owner: 'vagrant', group: 'vagrant', mount_options: ['dmode=777,fmode=666']
+
+		# provisioning using Fabric
+		saucy.vm.provision :fabric do |fabric|
+			fabric.fabfile_path = "./fabfile.py"
+			fabric.tasks = ["kernel_name", "setup"]
+		end
+	end
+
+end
